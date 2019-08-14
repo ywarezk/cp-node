@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     models.Task.belongsTo(models.User);
     models.Task.belongsToMany(models.Tag, {
-      through: 'TagTask'
+      through: 'TagTask',
+      as: 'tags',
+      foreignKey: 'taskId',
+      otherKey: 'tagId'
     })
   };
   return Task;

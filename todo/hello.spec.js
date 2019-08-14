@@ -1,5 +1,7 @@
 const assert = require('assert');
 const app = require('./app');
+const axios = require('axios');
+const { Task } = require('./models'); 
 
 
 describe('hello world', function() {
@@ -15,11 +17,48 @@ describe('hello world', function() {
         });
     });
 
+    /**
+     * delete all the elements in the database
+     * load some initial data
+     */
+    beforeEach(function() {
+        return Task.destroy({
+            where: {
+
+            }
+        });
+    });
+
+    beforeEach(function() {
+        return Task.create({
+            title: 'hello', description: 'world'
+        })
+    })
+
     // before();
 
     it('expect hello to equal hello', function() {
         console.log('my first test');
         assert.strictEqual('hello', 'hello');
+    });
+
+    it('get tasks expect length', async function() {
+        const response = await axios
+                                .get('http://localhost:3000/api/tasks/');
+        assert.strictEqual(response.status, 200);
+        assert.strictEqual(response.data.length, 1);
+    });
+
+    it('create new task', async function() {
+        const response = await axios
+                                .post('http://localhost:3000/api/tasks/', {
+                                    title: 'foo',
+                                    description: 'bar',
+                                    // userId:  1
+                                });
+        assert.strictEqual(response.status, 201);
+        // assert.strictEqual(response.data.userId, 1);
+        assert.strictEqual(response.data.title, 'foo');
     });
 
     /**
