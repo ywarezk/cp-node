@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const User = require('../models').User;
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
 
 router.route('/')
   .get(function(req, res, next) {
@@ -17,5 +19,14 @@ router.route('/')
     }
     
   })
+
+router.post('/login', passport.authenticate('local', {
+  session: false
+}), function(req, res) {
+  jwt.sign({userId: req.user.id}, 'nerdeez', function(err, token) {
+    res.send(token);
+  });
+});
+
 
 module.exports = router;

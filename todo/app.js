@@ -3,6 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session')
+require('./authentication/local');
+require('./authentication/jwt');
+const passport = require('passport');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -22,14 +26,29 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser()); // req.cookie
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(passport.initialize());
+
+
+// req.session = {}
+// req.session.userId = 100;
+app.use(session({
+  secret: 'keyboard cat',
+  // store: 
+}));
+
+app.use(passport.session());
+
+// <a href="bank.com/transfer/....>"
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/api/tasks', tasksRouter);
+app.use('/api/tasks', passport.authenticate('jwt', {session: false}), tasksRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
 
 // error handler
 app.use(function(err, req, res, next) {

@@ -1,7 +1,7 @@
 const assert = require('assert');
 const app = require('./app');
 const axios = require('axios');
-const { Task } = require('./models'); 
+const { Task, Tag } = require('./models'); 
 
 
 describe('hello world', function() {
@@ -29,10 +29,18 @@ describe('hello world', function() {
         });
     });
 
-    beforeEach(function() {
-        return Task.create({
+    beforeEach(async function() {
+        const tag = await Tag.create({title: 'hello'})
+        const task = await Task.create({
             title: 'hello', description: 'world'
-        })
+        });
+        try {
+            await task.addTag(tag);
+        } catch(err) {
+            debugger;
+        }
+        
+        debugger;
     })
 
     // before();
@@ -42,7 +50,7 @@ describe('hello world', function() {
         assert.strictEqual('hello', 'hello');
     });
 
-    it('get tasks expect length', async function() {
+    it.only('get tasks expect length', async function() {
         const response = await axios
                                 .get('http://localhost:3000/api/tasks/');
         assert.strictEqual(response.status, 200);

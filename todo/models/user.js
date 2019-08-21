@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isEmail: true
       }
-    }
+    },
+    password: DataTypes.STRING,
   }, {});
   User.associate = function(models) {
     // associations can be defined here

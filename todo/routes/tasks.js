@@ -1,10 +1,16 @@
 const express = require('express');
 const Task = require('../models').Task;
+const passport = require('passport');
 
 const tasksRouter = express.Router();
 
 // /api/tasks/
+
+
+
+
 tasksRouter.route('/')
+    
     .get(
         async function(req, res) {
             const tasks = await Task.findAll({});
