@@ -1,0 +1,6 @@
+{
+  "development": {
+    "storage": "/Users/yarivkatz/Development/workspace/lectures/node/cp-node/graphql-tutorial/db.sqlite",
+    "dialect": "sqlite"
+  }
+}
