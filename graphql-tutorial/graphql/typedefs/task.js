@@ -21,7 +21,7 @@
     }
 
     type Mutation {
-        createTask(title: String, description: String, userId: Int): Task
+        createTask(title: String!, description: String, userId: Int): Task
     }
 
  `

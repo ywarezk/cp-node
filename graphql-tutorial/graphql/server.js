@@ -29,6 +29,11 @@ module.exports = new ApolloServer({
             return {user: null};
         }
         const token = authHeaders.split('Bearer ')[1];
+        // return new Promise((resolve) => {
+        //     jwt.verify(... , function(...) {
+        //         resolve(...);
+        //     })
+        // })
         const verify = promisify(jwt.verify);
         const payload = await verify(token, 'nerdeez');
         const user = await User.findByPk(payload.userId);
